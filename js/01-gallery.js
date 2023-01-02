@@ -16,9 +16,7 @@ function handleClickEvent(ev) {
   ev.preventDefault();
 
   if (HTMLElementUtilities.isIMG(target)) {
-    const source = target.dataset.source;
-    const description = target.alt;
-    modal.open({ source, description });
+    modal.open(target);
   }
 }
 

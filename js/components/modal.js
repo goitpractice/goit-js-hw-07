@@ -1,60 +1,58 @@
 import { KEYBOARD_KEY } from "../const/keycodes.js";
 
 export class Modal {
-    #instance;
-    #imageClass;
+  #instance;
+  #imageClass;
 
-    constructor(imageClass = 'modal-image') {
-        this.#imageClass = imageClass;
+  constructor(imageClass = "modal-image") {
+    this.#imageClass = imageClass;
 
-        this.#setupModalInstance();
-        this.#setupKeyboardEventsListener();
-    }
+    this.#setupModalInstance();
+    this.#setupKeyboardEventsListener();
+  }
 
-    get isOpen() {
-        return this.#instance.visible();
-    }
+  open(imgEl) {
+    const source = imgEl.dataset.source;
+    const description = imgEl.alt;
+    this.#updateModalImgData(source, description);
 
-    open({ source, description }) {
-        this.#updateModalImgData(source, description)
+    this.#instance.show();
+    this.#instance.element().focus();
+  }
 
-        this.#instance.show();
-        this.#instance.element().focus();
-    }
+  close() {
+    this.#updateModalImgData();
+    this.#instance.close();
+  }
 
-    close() {
-        this.#updateModalImgData();
-        this.#instance.close();
-    }
+  #setupModalInstance() {
+    // eslint-disable-next-line no-undef
+    this.#instance = basicLightbox.create(`<img class="${this.#imageClass}">`, {
+      onClose: () => this.#updateModalImgData(),
+    });
+  }
 
-    #setupModalInstance() {
-        // eslint-disable-next-line no-undef
-        this.#instance = basicLightbox.create(`<img class="${this.#imageClass}">`, {
-            onClose: () => this.#updateModalImgData(),
-        });
-    }
+  #setupKeyboardEventsListener() {
+    // modal wrapper is not focusable by default
+    this.#instance.element().tabIndex = 0;
+    this.#instance.element().addEventListener("keydown", (ev) => {
+      ev.preventDefault(); // some keybindings can shift focus from the modal to other elements behind it
+      ev.stopPropagation();
 
-    #setupKeyboardEventsListener() {
-        // modal wrapper is not focusable by default 
-        this.#instance.element().tabIndex = 0;
-        this.#instance.element().addEventListener('keydown', (ev) => {
-            ev.preventDefault(); // some keybindings can shift focus from the modal to other elements behind it
-            ev.stopPropagation();
+      if (ev.key === KEYBOARD_KEY.ESC) {
+        this.close();
+      }
+    });
+  }
 
-            if (ev.key === KEYBOARD_KEY.ESC) {
-                this.close();
-            }
-        });
-    }
+  #updateModalImgData(src = "", alt = "") {
+    const imageEl = this.#getModalImageEl();
 
-    #updateModalImgData(src = '', alt = '') {
-        const imageEl = this.#getModalImageEl();
+    imageEl.src = src;
+    imageEl.alt = alt;
+  }
 
-        imageEl.src = src;
-        imageEl.alt = alt;
-    }
-
-    #getModalImageEl() {
-        return this.#instance.element().getElementsByClassName(this.#imageClass)[0];
-    }
+  #getModalImageEl() {
+    return this.#instance.element().getElementsByClassName(this.#imageClass)[0];
+  }
 }
