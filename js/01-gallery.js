@@ -1,26 +1,14 @@
 import { galleryItems } from "./const/gallery-items.js";
-import { HTMLElementUtilities } from "./utilities/html-element.js";
 import { Modal } from "./components/modal.js";
-import { fillGallery } from "./utilities/gallery.js";
+import { Gallery } from "./components/gallery.js";
 
-const galleryEl = document.querySelector(".gallery");
+// eslint-disable-next-line no-undef
 const modal = new Modal();
+const gallery = new Gallery(modal);
 
-fillGallery(galleryEl, galleryItems, createGalleryEl);
+gallery.fillGallery(galleryItems, buildGalleryItem);
 
-galleryEl.addEventListener("click", handleClickEvent);
-
-function handleClickEvent(ev) {
-  const { target } = ev;
-
-  ev.preventDefault();
-
-  if (HTMLElementUtilities.isIMG(target)) {
-    modal.open(target);
-  }
-}
-
-function createGalleryEl({ preview, original, description }) {
+function buildGalleryItem({ preview, original, description }) {
   const galleryItemEl = document.createElement("div");
 
   galleryItemEl.classList.add("gallery__item");

@@ -1,28 +1,16 @@
+import { Gallery } from "./components/gallery.js";
 import { galleryItems } from "./const/gallery-items.js";
-import { fillGallery } from "./utilities/gallery.js";
-import { HTMLElementUtilities } from "./utilities/html-element.js";
-
-let modal;
-const galleryEl = document.querySelector(".gallery");
-
-fillGallery(galleryEl, galleryItems, createGalleryEl);
 
 // eslint-disable-next-line no-undef
-modal = new SimpleLightbox(".gallery a", { captionDelay: 250 });
+const modal = new SimpleLightbox(".gallery a", { captionDelay: 250 });
+const gallery = new Gallery(modal);
 
-galleryEl.addEventListener("click", handleClickEvent);
+gallery.fillGallery(galleryItems, buildGalleryItem);
 
-function handleClickEvent(ev) {
-  const { target } = ev;
+// simplelightbox is a gallery manager & requires refresh after the gallery items were populated
+modal.refresh();
 
-  ev.preventDefault();
-
-  if (HTMLElementUtilities.isIMG(target)) {
-    modal.open(ev.target);
-  }
-}
-
-function createGalleryEl({ preview, original, description }) {
+function buildGalleryItem({ preview, original, description }) {
   const galleryItemEl = document.createElement("a");
 
   galleryItemEl.classList.add("gallery__item");
