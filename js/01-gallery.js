@@ -1,13 +1,14 @@
-import { galleryItems } from './const/gallery-items.js';
-import { HTMLElementUtilities } from './utilities/html-element.js';
-import { Modal } from './components/modal.js';
+import { galleryItems } from "./const/gallery-items.js";
+import { HTMLElementUtilities } from "./utilities/html-element.js";
+import { Modal } from "./components/modal.js";
+import { fillGallery } from "./utilities/gallery.js";
 
-const galleryEl = document.querySelector('.gallery');
+const galleryEl = document.querySelector(".gallery");
 const modal = new Modal();
 
-fillGallery(galleryItems);
+fillGallery(galleryEl, galleryItems, createGalleryEl);
 
-galleryEl.addEventListener('click', handleClickEvent);
+galleryEl.addEventListener("click", handleClickEvent);
 
 function handleClickEvent(ev) {
   const { target } = ev;
@@ -21,16 +22,10 @@ function handleClickEvent(ev) {
   }
 }
 
-function fillGallery(items) {
-  items.forEach(item => {
-    const galleryItemEl = createGalleryEl(item);
-    galleryEl.appendChild(galleryItemEl);
-  });
-}
-
 function createGalleryEl({ preview, original, description }) {
-  const galleryItemEl = document.createElement('div');
-  galleryItemEl.classList.add('gallery__item');
+  const galleryItemEl = document.createElement("div");
+
+  galleryItemEl.classList.add("gallery__item");
   galleryItemEl.innerHTML = `
     <a class="gallery__link" href="large-image.jpg">
       <img
@@ -41,5 +36,6 @@ function createGalleryEl({ preview, original, description }) {
       />
     </a>
   `;
+
   return galleryItemEl;
 }
