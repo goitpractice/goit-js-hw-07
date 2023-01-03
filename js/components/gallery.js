@@ -1,4 +1,4 @@
-import { HTMLElementUtilities } from "../utilities/html-element.js";
+import { HTMLUtilities } from "../utilities/html.js";
 
 export class Gallery {
   #modalService;
@@ -22,7 +22,7 @@ export class Gallery {
     this.#galleryEl.addEventListener("click", (ev) => {
       ev.preventDefault();
 
-      if (HTMLElementUtilities.isIMG(ev.target)) {
+      if (HTMLUtilities.isIMG(ev.target)) {
         this.#modalService.open(ev.target);
       }
     });
