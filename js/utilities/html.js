@@ -4,4 +4,5 @@ export class HTMLUtilities {
   static isIMG(element) {
     return element.tagName === TAG_NAME.IMG;
   }
+  // cmnt
 }
